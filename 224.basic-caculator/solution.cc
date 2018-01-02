@@ -1,16 +1,15 @@
 class Solution {
-public:
-    int calculate(string s) {
-            std::vector<std::string> nums;
+ public:
+  int calculate(string s) {
+    std::vector<std::string> nums;
     std::stack<char> ops;
 
-    auto instant_calc = [](char op) -> bool {
-      return op == ')';
-    };
+    auto instant_calc = [](char op) -> bool { return op == ')'; };
 
     auto string_to_integer = [](const std::string& s) -> int {
       int sum = 0;
-      for (std::string::const_reverse_iterator i = s.crbegin(); i != s.crend(); i++) {
+      for (std::string::const_reverse_iterator i = s.crbegin(); i != s.crend();
+           i++) {
         int offset = i - s.crbegin();
         sum += ((*i) - '0') * pow(10, offset);
       }
@@ -25,7 +24,10 @@ public:
       std::string s;
       int len = 0;
       int cn = n;
-      do { len++; cn /= 10; } while (cn);
+      do {
+        len++;
+        cn /= 10;
+      } while (cn);
       for (auto i = len - 1; i >= 0; --i) {
         int w = n / static_cast<int>(pow(10, i));
         s += char('0' + w);
@@ -40,9 +42,6 @@ public:
     assert(int_to_string(10) == "10");
     assert(int_to_string(9) == "9");
 
-
-
-
     auto calc_internal = [&]() -> void {
       int sum = 0;
       // get the nums and pop until (
@@ -54,15 +53,14 @@ public:
         int rn = string_to_integer(n);
         if (op == '-') {
           sum -= rn;
-        }
-        else if (op == '+') {
+        } else if (op == '+') {
           sum += rn;
         }
       }
 
       // means there is '('
       if (ops.size() > 0) {
-        ops.pop(); // pop '('
+        ops.pop();  // pop '('
       }
 
       std::string n = nums[nums.size() - 1];
@@ -81,29 +79,22 @@ public:
           if (current_index > 0) {
             if (isdigit(s[current_index - 1])) {
               nums[nums.size() - 1] += c;
-            }
-            else {
+            } else {
               nums.push_back(std::string() + c);
             }
-          }
-          else {
+          } else {
             nums.push_back(std::string() + c);
           }
-        }
-        else if (c == '+' || c == '-') {
+        } else if (c == '+' || c == '-') {
           ops.push(c);
-        }
-        else if (instant_calc(c)) {
+        } else if (instant_calc(c)) {
           calc_internal();
-        }
-        else if (c == '(') {
+        } else if (c == '(') {
           ops.push(c);
-        }
-        else {
+        } else {
           // do nothing
         }
-      }
-      else {
+      } else {
         // ignore ' '
       }
 
@@ -114,5 +105,5 @@ public:
 
     std::string r = nums[nums.size() - 1];
     return string_to_integer(r);
-    }
+  }
 };
